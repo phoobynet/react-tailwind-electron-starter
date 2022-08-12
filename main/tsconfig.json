@@ -5,7 +5,17 @@
     "rootDir": ".",
     "target": "ESNext",
     "allowJs": true,
-    "esModuleInterop": true
+    "esModuleInterop": true,
+    "moduleResolution": "Node",
+    "baseUrl": ".",
+    "paths": {
+      "@main/*": ["./*"]
+    }
   },
-  "include": ["./**/*.ts", "./**/*.js"]
+  "include": ["./**/*.ts", "./**/*.js"],
+  "references": [
+    {
+      "path": "../shared"
+    }
+  ]
 }

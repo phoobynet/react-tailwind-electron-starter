@@ -4,18 +4,19 @@
   "version": "0.0.0",
   "main": "build/main/main.js",
   "scripts": {
+    "dev": "npm run main:build-ts && concurrently \"npm run renderer:dev\" \"npm run main:watch\" \"npm run main:nodemon\"",
+    "build": "npm run renderer:build && npm run main:build-ts && electron-forge make",
     "storybook": "start-storybook -p 6006",
     "build-storybook": "build-storybook",
-    "dev": "npm run main:build-ts && concurrently \"npm run renderer:dev\" \"npm run main:watch\" \"npm run main:nodemon\"",
     "renderer:dev": "vite",
-    "renderer:build": "vue-tsc -p ./renderer/tsconfig.json --noEmit && vite build",
+    "renderer:build": "tsc --build renderer/tsconfig.json && vue-tsc --project renderer/tsconfig.json --noEmit && vite build",
     "renderer:serve": "vite preview",
+    "shared:build": "tsc --build shared/tsconfig.json",
     "main:nodemon": "NODE_ENV=development nodemon --watch build/main --exec 'electron .'",
     "main:watch": "npm-watch",
-    "main:build-ts": "tsc --project main/tsconfig.json",
+    "main:build-ts": "tsc --build main/tsconfig.json && tsc-alias -p main/tsconfig.json",
     "main:start": "electron-forge start",
     "main:package": "electron-forge package",
-    "main:make": "npm run renderer:build && npm run main:build-ts && electron-forge make",
     "start": "electron-forge start",
     "package": "electron-forge package",
     "make": "electron-forge make",
@@ -24,7 +25,8 @@
   "watch": {
     "main:build-ts": {
       "patterns": [
-        "main"
+        "main",
+        "shared"
       ],
       "extensions": "ts,js",
       "quiet": false,
@@ -32,6 +34,7 @@
     }
   },
   "dependencies": {
+    "axios": "^0.27.2",
     "classnames": "^2.3.1",
     "date-fns": "^2.29.1",
     "electron-context-menu": "^3.3.0",
@@ -41,7 +44,8 @@
     "react-dom": "^18.2.0",
     "react-icons": "^4.4.0",
     "react-router-dom": "^6.3.0",
-    "react-use": "^17.4.0"
+    "react-use": "^17.4.0",
+    "styled-components": "^5.3.5"
   },
   "devDependencies": {
     "@babel/core": "^7.18.10",
@@ -89,9 +93,11 @@
     "pretty-quick": "^3.1.3",
     "rimraf": "^3.0.2",
     "tailwindcss": "^3.1.8",
+    "tsc-alias": "^1.7.0",
     "typescript": "^4.6.4",
     "vite": "^3.0.0",
-    "vite-tsconfig-paths": "^3.5.0"
+    "vite-tsconfig-paths": "^3.5.0",
+    "vue-tsc": "^0.40.1"
   },
   "lint-staged": {
     "*.js": "eslint --cache --fix",

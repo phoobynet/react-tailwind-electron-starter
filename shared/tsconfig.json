@@ -1,0 +1,13 @@
+{
+  "compilerOptions": {
+    "target": "ESNext",
+    "declaration": true,
+    "declarationMap": true,
+    "esModuleInterop": true,
+    "moduleResolution": "node",
+    "module": "commonjs",
+    "outDir": "../build/shared",
+    "rootDir": ".",
+    "composite": true
+  }
+}
